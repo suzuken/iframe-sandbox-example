@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <p id="location">top.location: </p>
+  <p id="protocol">top.protocol: </p>
+  <script type="text/javascript">
+     var l = document.getElementById('location');
+     l.innerHTML = l.innerHTML + window.top.location.href;
+     var p = document.getElementById('protocol');
+     p.innerHTML = p.innerHTML + window.top.location.protocol;
+  </script>
+</body>
+</html>
