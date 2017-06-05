@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>parent</title>
+  <script>
+var t;
+window.addEventListener('load', function(event) {
+  t = Date.now();
+  console.log(t);
+});
+window.addEventListener('beforeunload', function(event) {
+  if (delta(t) < 1000) {
+    sendData();
+  }
+});
+window.addEventListener('unload', function(event) {
+  console.log("unload: %d, %d", t, delta(t));
+});
+
+function delta(start) {
+  return Date.now() - start;
+}
+
+function sendData() {
+  var pairs = [];
+  pairs.push('delta=' + delta(t));
+  pairs.push('location=' + encodeURIComponent(location.href));
+  encoded = pairs.join('&').replace(/%20/g, '+');
+
+  var xhr = new XMLHttpRequest();
+  xhr.addEventListener('load', function(event) {
+    console.log("xhr:load", event);
+  });
+  xhr.open('POST', 'http://localhost:8888/p.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send(encoded);
+}
+
+  </script>
+</head>
+<body>
+  unload example
+  <iframe src="./buster.html" frameborder="0"></iframe>
+  <button type="button" onclick="sendData()" ></button>
+</body>
+</html>
